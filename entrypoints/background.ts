@@ -1,6 +1,46 @@
+async function reloadAllTabs() {
+	try {
+		const tabs = await browser.tabs.query({});
+
+		const reloadPromises = tabs
+			.filter(
+				(tab) =>
+					tab.url &&
+					(tab.url.startsWith("http://") || tab.url.startsWith("https://"))
+			)
+			.map(async (tab) => {
+				try {
+					await browser.tabs.reload(tab?.id!);
+					console.log(`✓ Rechargé: ${tab.url}`);
+				} catch (error) {
+					console.warn(`✗ Échec rechargement onglet ${tab.id}:`, error);
+				}
+			});
+
+		await Promise.all(reloadPromises);
+		console.log("Tous les onglets ont été traités");
+	} catch (error) {
+		console.error("Erreur lors du rechargement:", error);
+	}
+}
+
 export default defineBackground(() => {
 	let tabShuffleInterval: NodeJS.Timeout | null = null;
 	let exampleTabsWithMouseOut = new Set<number>();
+
+	// Se déclenche à l'installation ET à l'activation
+	browser.runtime.onInstalled.addListener(async (details) => {
+		console.log("Extension installée/activée:", details.reason);
+
+		// Recharger tous les onglets immédiatement
+		await reloadAllTabs();
+	});
+
+	// Se déclenche aussi au démarrage du navigateur
+	browser.runtime.onStartup.addListener(async () => {
+		console.log("Extension démarrée");
+		await reloadAllTabs();
+	});
 
 	// Fonctionnalité 2 : Désordre des onglets
 	chrome.runtime.onMessage.addListener((message, sender) => {
