@@ -9,6 +9,6 @@ export default defineConfig({
 		description: "Extension stupid avec des fonctionnalités inutiles",
 		version: "1.0.0",
 		permissions: ["tabs", "notifications", "activeTab", "storage", "scripting"],
-		host_permissions: ["<all_urls>"],
+		host_permissions: ["https://*/*"],
 	},
 });
