@@ -1,5 +1,5 @@
 export default defineContentScript({
-	matches: ["https://*/*"],
+	matches: ["https://*/*", "http://*/*"],
 	main() {
 		const currentUrl = window.location.href;
 
