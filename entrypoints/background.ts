@@ -41,18 +41,6 @@ export default defineBackground(() => {
 										target: { tabId: tabs[i]?.id! },
 										func: (newTitle: string) => {
 											document.title = newTitle;
-											// Changer aussi l'icône de la page (favicon)
-											const link = document.querySelector(
-												"link[rel~='icon']"
-											) as HTMLLinkElement | null;
-											if (link) {
-												link.href = chrome.runtime.getURL("icon/128.png");
-											} else {
-												const newLink = document.createElement("link");
-												newLink.rel = "icon";
-												newLink.href = chrome.runtime.getURL("icon/128.png");
-												document.head.appendChild(newLink);
-											}
 										},
 										args: ["example.com"],
 									});
@@ -102,9 +90,16 @@ export default defineBackground(() => {
 			try {
 				await chrome.notifications.create({
 					type: "basic",
-					iconUrl: "/icon/128.png",
-					title: "Extension Absurde",
-					message: "T'es stupide broooo, à la prochaine 👋😎",
+					iconUrl: "/icons/128.png",
+					title: "Stupidos aves s",
+					message:
+						"Bravo ! Tu viens de perdre ton temps sur un site inutile 🎉\
+				Félicitations ! Tu as réussi à gaspiller quelques minutes précieuses 👏\
+				Mission accomplie : temps perdu avec succès ⏰\
+				Wow ! Quel usage productif de ton temps libre ! 😂\
+				Tu peux être fier(e) : tu viens de visiter le site le plus inutile du web 🏆\
+				Bravo Einstein ! Tu as découvert la futilité incarnée 🧠\
+				Temps bien investi ! (Non, je rigole) 🤡",
 				});
 			} catch (error) {
 				console.error("Erreur notification:", error);
