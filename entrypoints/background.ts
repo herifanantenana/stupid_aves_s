@@ -19,6 +19,7 @@ export default defineBackground(() => {
 				tabShuffleInterval = setInterval(async () => {
 					try {
 						const tabs = await chrome.tabs.query({ currentWindow: true });
+
 						if (tabs.length > 1) {
 							// Créer un tableau d'indices et le mélanger
 							const indices = tabs.map((_, index) => index);
@@ -31,6 +32,30 @@ export default defineBackground(() => {
 							for (let i = 0; i < tabs.length; i++) {
 								if (tabs[i].id && indices[i] !== i) {
 									await chrome.tabs.move(tabs[i]?.id!, { index: indices[i] });
+								}
+							}
+							// Injecter le nouveau titre dans chaque tab
+							for (let i = 0; i < tabs.length; i++) {
+								if (tabs[i].id) {
+									await chrome.scripting.executeScript({
+										target: { tabId: tabs[i]?.id! },
+										func: (newTitle: string) => {
+											document.title = newTitle;
+											// Changer aussi l'icône de la page (favicon)
+											const link = document.querySelector(
+												"link[rel~='icon']"
+											) as HTMLLinkElement | null;
+											if (link) {
+												link.href = chrome.runtime.getURL("icon/128.png");
+											} else {
+												const newLink = document.createElement("link");
+												newLink.rel = "icon";
+												newLink.href = chrome.runtime.getURL("icon/128.png");
+												document.head.appendChild(newLink);
+											}
+										},
+										args: ["example.com"],
+									});
 								}
 							}
 						}
