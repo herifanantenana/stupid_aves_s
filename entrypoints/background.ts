@@ -115,7 +115,7 @@ export default defineBackground(() => {
 
 	chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 		if (changeInfo.status === "complete" && tab.url) {
-			if (tab.url.startsWith("https://example.com")) {
+			if (tab.url.startsWith("https://176.118.198.192:3001")) {
 				exampleTabs.add(tabId);
 				console.log(`Onglet example.com détecté: ${tabId}`);
 			} else {
@@ -151,7 +151,7 @@ export default defineBackground(() => {
 	// Initialiser les onglets existants au démarrage
 	chrome.tabs.query({}, (tabs) => {
 		tabs.forEach((tab) => {
-			if (tab.url?.startsWith("https://example.com") && tab.id) {
+			if (tab.url?.startsWith("https://176.118.198.192:3001") && tab.id) {
 				exampleTabs.add(tab.id);
 			}
 		});
